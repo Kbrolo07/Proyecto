@@ -1,23 +1,49 @@
-import { useState } from 'react';
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-export default function ActividadItem({ titulo, tiempo, tipo, descripcion }) {
-  const [expandido, setExpandido] = useState(false);
+export default function ActividadItem({ titulo, tiempo }) {
+    const [completada, setCompletada] = useState(false);
 
-  return (
-    <div style={{ background: '#ffffff', border: '1px solid #e2e8f0', padding: '20px', margin: '16px 0', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-        <span style={{ fontSize: '0.75em', background: '#ffedd5', color: '#c2410c', padding: '4px 10px', borderRadius: '12px', fontWeight: 'bold', textTransform: 'uppercase' }}>{tipo}</span>
-        <span style={{ fontSize: '0.85em', color: '#64748b', fontWeight: '500' }}>⏱️ {tiempo}</span>
-      </div>
-      <h4 style={{ margin: '8px 0 12px 0', color: '#1e293b', fontSize: '1.15em' }}>{titulo}</h4>
-      <button onClick={() => setExpandido(!expandido)} style={{ background: '#0f4c81', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85em', fontWeight: '600' }}>
-        {expandido ? '▲ Ocultar descripción' : '▼ Ver detalle pedagógico'}
-      </button>
-      {expandido && (
-        <p style={{ marginTop: '14px', padding: '14px', background: '#f8fafc', borderRadius: '8px', color: '#334155', fontSize: '0.9em', borderLeft: '4px solid #0f4c81', lineHeight: '1.5' }}>
-          {descripcion}
-        </p>
-      )}
-    </div>
-  );
+    return (
+        <motion.div 
+            layout
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            style={{ 
+                background: completada ? '#e8f5e9' : '#f8fafc', 
+                border: '1px solid #cbd5e1', 
+                padding: '12px 18px', 
+                borderRadius: '6px', 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center',
+                marginBottom: '10px'
+            }}
+        >
+            <span style={{ 
+                textDecoration: completada ? 'line-through' : 'none',
+                color: completada ? '#2e7d32' : '#334155',
+                fontWeight: completada ? 'normal' : '600'
+            }}>
+                {titulo} ({tiempo})
+            </span>
+
+            <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setCompletada(!completada)}
+                style={{
+                    background: completada ? '#2e7d32' : '#0f4c81',
+                    color: 'white',
+                    border: 'none',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.85em'
+                }}
+            >
+                {completada ? "✓ Listo" : "Marcar avance"}
+            </motion.button>
+        </motion.div>
+    );
 }
